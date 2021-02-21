@@ -1,3 +1,4 @@
+import re
 import requests
 import uuid
 
@@ -52,3 +53,15 @@ class Robinhood:
 
         token = r.json()
         self.__TOKEN = f"{token['token_type']} {token['access_token']}"
+
+    def get_positions(self):
+        r = requests.get(f'{self.__API_BASE_URL}/positions/?nonzero=true', headers={'Authorization': self.__TOKEN})
+        positions = r.json()['results']
+        instrument_ids = ','.join(tuple(re.search(f'{self.__API_BASE_URL}/positions/.+/(.+)/$', position['url']).group(1) for position in positions))
+        r = requests.get(f"{self.__API_BASE_URL}/instruments/?active_instruments_only=false&ids={instrument_ids}", headers={'Authorization': self.__TOKEN})
+        instruments = r.json()['results']
+
+        return tuple({
+            'symbol': instruments[i]['symbol'],
+            'quantity': float(positions[i]['quantity']),
+        } for i in range(len(positions)))

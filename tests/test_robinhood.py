@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import robinhood as rh
 import unittest
 import uuid
@@ -9,19 +10,41 @@ class TestFunctions(unittest.TestCase):
         self.assertIsInstance(uuid.UUID(rh.generate_device_token()), uuid.UUID)
 
 class TestRobinhood(unittest.TestCase):
-    def test_robinhood(self):
+    def __init__(self, *args, **kwargs):
+        super(TestRobinhood, self).__init__(*args, **kwargs)
+
         with open('config.json') as f:
             config = json.load(f)
 
-        device_token = config['device_token'] or os.environ.get('ROBINHOOD_DEVICE_TOKEN')
-        username = config['username'] or os.environ.get('ROBINHOOD_USERNAME')
-        password = config['password'] or os.environ.get('ROBINHOOD_PASSWORD')
+        self.device_token = config['device_token'] or os.environ.get('ROBINHOOD_DEVICE_TOKEN')
+        self.username = config['username'] or os.environ.get('ROBINHOOD_USERNAME')
+        self.password = config['password'] or os.environ.get('ROBINHOOD_PASSWORD')
 
-        self.assertIsInstance(rh.Robinhood(device_token, username, password), rh.Robinhood)
-        self.assertRaises(Exception, rh.Robinhood, device_token, username, '')
-        self.assertRaises(Exception, rh.Robinhood, device_token, '', password)
-        self.assertRaises(Exception, rh.Robinhood, device_token, '', '')
-        self.assertRaises(Exception, rh.Robinhood, '', username, password)
-        self.assertRaises(Exception, rh.Robinhood, '', username, '')
-        self.assertRaises(Exception, rh.Robinhood, '', '', password)
+    def setUp(self):
+        self.robinhood = rh.Robinhood(self.device_token, self.username, self.password)
+
+    def test_robinhood(self):
+        self.assertIsInstance(self.robinhood, rh.Robinhood)
+        self.assertRaises(Exception, rh.Robinhood, self.device_token, self.username, '')
+        self.assertRaises(Exception, rh.Robinhood, self.device_token, '', self.password)
+        self.assertRaises(Exception, rh.Robinhood, self.device_token, '', '')
+        self.assertRaises(Exception, rh.Robinhood, '', self.username, self.password)
+        self.assertRaises(Exception, rh.Robinhood, '', self.username, '')
+        self.assertRaises(Exception, rh.Robinhood, '', '', self.password)
         self.assertRaises(Exception, rh.Robinhood, '', '', '')
+
+    def test_get_positions(self):
+        positions = self.robinhood.get_positions()
+
+        self.assertIs(type(positions), tuple)
+
+        for position in positions:
+            symbol = position['symbol']
+
+            self.assertIs(type(symbol), str)
+            self.assertTrue(re.search('^[A-Z]+$', symbol))
+
+            quantity = position['quantity']
+
+            self.assertIs(type(quantity), float)
+            self.assertTrue(quantity > 0)
