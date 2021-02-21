@@ -1,5 +1,7 @@
 # robinhood
 
+![test](https://github.com/jaredrcleghorn/robinhood/actions/workflows/test.yml/badge.svg)
+
 Unofficial Robinhood API client library for Python
 
 ## Contributing
