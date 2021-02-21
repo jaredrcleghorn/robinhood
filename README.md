@@ -1,5 +1,6 @@
 # robinhood
 
+[![GitHub](https://img.shields.io/github/license/jaredrcleghorn/robinhood?color=blue)](https://github.com/jaredrcleghorn/robinhood/blob/main/LICENSE)
 ![test](https://github.com/jaredrcleghorn/robinhood/actions/workflows/test.yml/badge.svg)
 
 Unofficial Robinhood API client library for Python
