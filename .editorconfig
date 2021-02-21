@@ -10,7 +10,7 @@ insert_final_newline = true
 [*.py]
 indent_size = 4
 
-[test.yml]
+[publish.yml]
 indent_size = 2
 
 [config.json]

@@ -4,12 +4,19 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "*"
+robinhood = {editable = true, path = "."}
 
 [dev-packages]
+twine = "*"
+build = "*"
+bump2version = "*"
+requests = "*"
 
 [requires]
 python_version = "3.9"
 
 [scripts]
 test = "python -m unittest"
+bump = "python bump.py"
+build = "python -m build"
+upload = "python -m twine upload dist/*"
