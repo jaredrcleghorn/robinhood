@@ -14,5 +14,12 @@ jobs:
         uses: actions/setup-python@v2
       - name: Install Pipenv
         run: pip install pipenv
+      - name: Install dependencies
+        run: pipenv install
       - name: Test
         run: pipenv run test
+        env:
+          ROBINHOOD_DEVICE_TOKEN: ${{ secrets.ROBINHOOD_DEVICE_TOKEN }}
+          ROBINHOOD_USERNAME: ${{ secrets.ROBINHOOD_USERNAME }}
+          ROBINHOOD_PASSWORD: ${{ secrets.ROBINHOOD_PASSWORD }}
+

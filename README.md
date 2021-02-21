@@ -19,7 +19,14 @@ Then, to install Pipenv, run
 brew install pipenv
 ```
 
-To run tests, move into the project folder and run
+To install dependencies, move into the project folder and run
+
+```shell
+pipenv install
+```
+
+To run tests, fill out the `config.json` file with your Robinhood
+`username` and `password` and then run
 
 ```shell
 pipenv run test
