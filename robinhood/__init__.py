@@ -65,3 +65,9 @@ class Robinhood:
             'symbol': instruments[i]['symbol'],
             'quantity': float(positions[i]['quantity']),
         } for i in range(len(positions)))
+
+    def get_historicals(self, symbol):
+        r = requests.get(f'{self.__API_BASE_URL}/marketdata/historicals/{symbol}/?bounds=regular&interval=day&span=year', headers={'Authorization': self.__TOKEN})
+        historicals = r.json()['historicals']
+
+        return tuple(float(historical['close_price']) for historical in historicals)

@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setuptools.setup(
     name='jc.robinhood',
-    version='1.0.3',
+    version='1.1.0',
     description='Unofficial Robinhood API client library for Python',
     long_description=long_description,
     long_description_content_type='text/markdown',

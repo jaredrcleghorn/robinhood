@@ -48,3 +48,12 @@ class TestRobinhood(unittest.TestCase):
 
             self.assertIs(type(quantity), float)
             self.assertTrue(quantity > 0)
+
+    def test_get_historicals(self):
+        historicals = self.robinhood.get_historicals('TSLA')
+
+        self.assertIs(type(historicals), tuple)
+
+        for historical in historicals:
+            self.assertIs(type(historical), float)
+            self.assertTrue(historical > 0)
