@@ -55,5 +55,12 @@ class TestRobinhood(unittest.TestCase):
         self.assertIs(type(historicals), tuple)
 
         for historical in historicals:
-            self.assertIs(type(historical), float)
-            self.assertTrue(historical > 0)
+            begins_at = historical['begins_at']
+
+            self.assertIs(type(begins_at), str)
+            self.assertTrue(re.search('^[0-9]{4}(-[0-9]{2}){2}$', begins_at))
+
+            close_price = historical['close_price']
+
+            self.assertIs(type(close_price), float)
+            self.assertTrue(close_price > 0)

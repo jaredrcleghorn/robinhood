@@ -70,4 +70,7 @@ class Robinhood:
         r = requests.get(f'{self.__API_BASE_URL}/marketdata/historicals/{symbol}/?bounds=regular&interval=day&span=year', headers={'Authorization': self.__TOKEN})
         historicals = r.json()['historicals']
 
-        return tuple(float(historical['close_price']) for historical in historicals)
+        return tuple({
+            'begins_at': re.search('^([0-9]{4}(-[0-9]{2}){2})', historical['begins_at']).group(1),
+            'close_price': float(historical['close_price']),
+        } for historical in historicals)
